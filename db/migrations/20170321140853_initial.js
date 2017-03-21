@@ -13,9 +13,9 @@ exports.up = function(knex, Promise) {
         knex.schema.createTable('drinkers', function(table){
           table.increments('id').primary();
           table.integer('fav_hh')
-               .references('id')
-               .inTable('restaurants');
-          table.string('message');
+          .references('id')
+          .inTable('restaurants');
+          table.string('name');
 
           table.timestamps();
         }),
@@ -29,12 +29,13 @@ exports.up = function(knex, Promise) {
                  .references('id')
                  .inTable('drinkers');
             table.string('hours');
-            table.string('drinks');
-            table.string('food');
+            table.text('drinks');
+            table.text('food');
 
             table.timestamps();
         })
     ])
+
 };
 
 exports.down = function(knex, Promise) {
