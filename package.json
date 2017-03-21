@@ -1,0 +1,23 @@
+{
+  "name": "happyhourapi",
+  "version": "1.0.0",
+  "description": "An API for a happy hour app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apsitos/HappyHourAPI.git"
+  },
+  "author": "Annastasia Psitos",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/apsitos/HappyHourAPI/issues"
+  },
+  "homepage": "https://github.com/apsitos/HappyHourAPI#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "expres": "0.0.5"
+  }
+}
