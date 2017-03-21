@@ -10,6 +10,16 @@ exports.up = function(knex, Promise) {
             table.timestamps();
         }),
 
+        knex.schema.createTable('drinkers', function(table){
+          table.increments('id').primary();
+          table.integer('fav_hh')
+               .references('id')
+               .inTable('restaurants');
+          table.string('message');
+
+          table.timestamps();
+        }),
+
         knex.schema.createTable('happyhours', function(table){
             table.increments('id').primary();
             table.integer('restaurant_id')
@@ -21,16 +31,6 @@ exports.up = function(knex, Promise) {
             table.string('hours');
             table.string('drinks');
             table.string('food');
-
-            table.timestamps();
-        }),
-
-        knex.schema.createTable('drinkers', function(table){
-            table.increments('id').primary();
-            table.integer('fav_hh')
-                 .references('id')
-                 .inTable('restaurants');
-            table.string('message');
 
             table.timestamps();
         })
