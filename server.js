@@ -38,11 +38,17 @@ app.get('/api/v1/restaurants/:id', (request, response) => {
 })
 
 app.get('/api/v1/happyhours/:id', (request, response) => {
-
+  const { id } = request.params;
+  database('happyhours').where('id', id).select()
+    .then(happyhour => { response.status(200).json(happyhour); })
+    .catch(error => { console.error('There is no happy hour', error);})
 })
 
 app.get('/api/v1/drinkers/:id', (request, response) => {
-
+  const { id } = request.params;
+  database('drinkers').where('id', id).select()
+    .then(person => { response.status(200).json(person); })
+    .catch(error => { console.error('This person does not exist', error);})
 })
 
 app.post('/api/v1/restaurants', (request, response) => {
