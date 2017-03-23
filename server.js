@@ -22,12 +22,24 @@ app.get('/api/v1/restaurants', (request, response) => {
 })
 
 app.get('/api/v1/happyhours', (request, response) => {
+  let user = request.query.user
+
   database('happyhours').select()
-    .then(happyhours => { response.status(200).json(happyhours); })
+    .then((happyhours) => {
+      console.log(happyhours);
+      if(user) {
+        let favhh = happyhours.filter((obj) => {
+
+        })
+        console.log(favhh);
+      } else {
+       response.status(200).json(happyhours);
+      }
+    })
     .catch(error => {
       console.error('Happy hours could not be loaded', error);
       response.send(404, 'Happy hours could not be loaded');
-    })
+  })
 })
 
 app.get('/api/v1/drinkers', (request, response) => {
@@ -64,10 +76,6 @@ app.get('/api/v1/drinkers/:id', (request, response) => {
       console.error('This person does not exist', error);
       response.send(404, 'This person does not exist')
     })
-})
-
-app.get('/api/v1/restaurants/:id/favorites', (request, response) => {
-
 })
 
 app.post('/api/v1/restaurants', (request, response) => {
@@ -223,3 +231,5 @@ app.delete('/api/v1/drinkers/:id', (request, response) => {
 app.listen(app.get('port'), ()=>{
   console.log(`${app.locals.title} is running at ${app.get('port')}`)
 })
+
+module.exports = app
