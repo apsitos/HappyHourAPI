@@ -35,10 +35,7 @@ describe('Server', () => {
   });
 });
 
-console.log('no more tests');
-
 describe('GET /api/v1/restaurants', () => {
-  console.log('get rest');
   setUp();
   it('should return a JSON object of restaurants', (done) => {
     chai.request(app)
@@ -48,8 +45,44 @@ describe('GET /api/v1/restaurants', () => {
       expect(res).to.have.status(200)
       expect(res).to.be.json
       expect(res.body).to.be.a('array')
-      expect(res.body).to.have.length(30)
+      expect(res.body).to.have.length(29 )
       done()
     });
   });
+});
+
+describe('GET /api/v1/happyhours', () => {
+  setUp();
+  it('should return a JSON object of restaurants', (done) => {
+    chai.request(app)
+    .get('/api/v1/restaurants')
+    .end((err, res) => {
+      if(err) {done(err)}
+      expect(res).to.have.status(200)
+      expect(res).to.be.json
+      expect(res.body).to.be.a('array')
+      expect(res.body).to.have.length(29 )
+      done()
+    });
+  });
+})
+
+describe('GET /api/v1/drinkers', () => {
+  setUp();
+  it('should return a JSON object of restaurants', (done) => {
+    chai.request(app)
+    .get('/api/v1/restaurants')
+    .end((err, res) => {
+      if(err) {done(err)}
+      expect(res).to.have.status(200)
+      expect(res).to.be.json
+      expect(res.body).to.be.a('array')
+      expect(res.body).to.have.length(29 )
+      done()
+    });
+  });
+});
+
+describe('GET /api/v1/restaurants/:id', (done) => {
+  
 })
