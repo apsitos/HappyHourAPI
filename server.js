@@ -52,7 +52,11 @@ app.get('/api/v1/drinkers/:id', (request, response) => {
 })
 
 app.post('/api/v1/restaurants', (request, response) => {
+  const { name, address, phone } = request.body;
+  const restaurant = { name, address, phone, create_at: new Date };
 
+  database('restaurants').insert(restaurant)
+    .then()
 })
 
 app.post('/api/v1/happyhours', (request, response) => {
