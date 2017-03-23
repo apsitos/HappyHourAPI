@@ -4,7 +4,8 @@
   "description": "An API for a happy hour app",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node_modules/.bin/mocha ./tests/**.js || true",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,8 @@
     "expres": "0.0.5",
     "knex": "^0.12.8",
     "pg": "^6.1.5"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
   }
 }
