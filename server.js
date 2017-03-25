@@ -26,7 +26,6 @@ app.get('/api/v1/happyhours', (request, response) => {
 
   database('happyhours').select()
     .then((happyhours) => {
-      console.log(happyhours);
       if(user) {
         let favhh = happyhours.filter((obj) => {
 

@@ -82,15 +82,15 @@ describe('Server', () => {
         address: '321 North Street'
       })
       .end((err, res) => {
-        expect(res).to.throw
-        expect(res).to.have.status(422)
+        expect(err).to.throw
+        expect(err).to.have.status(422)
         done()
-      })
+      });
     });
   });
 
   describe('/api/v1/happyhours', () => {
-    it.skip('should return a JSON object of happyhours', (done) => {
+    it('should return a JSON object of happyhours', (done) => {
       chai.request(app)
       .get('/api/v1/happyhours')
       .end((err, res) => {
@@ -100,7 +100,7 @@ describe('Server', () => {
         expect(res.body).to.be.a('array')
         expect(res.body).to.have.length(30)
         done()
-      });
+      })
     });
 
     it.skip('POST should')
