@@ -51,7 +51,7 @@ describe('Server', () => {
 
     it('POST should add a new restaurant', (done) => {
       chai.request(app)
-      .post('/api/vi/restaurants')
+      .post('/api/v1/restaurants')
       .send({
         name: 'Johnnys Place',
         address: '321 North Street',
@@ -61,9 +61,32 @@ describe('Server', () => {
         if(err) {done(err)}
         expect(res).to.have.status(200)
         expect(res).to.be.json
+        expect(res.body).to.have.length(31)
+        expect(res.body[30]).to.have.property('id')
+        expect(res.body[30].id).to.equal(31)
+        expect(res.body[30]).to.have.property('name')
+        expect(res.body[30].name).to.equal('Johnnys Place')
+        expect(res.body[30]).to.have.property('address')
+        expect(res.body[30].address).to.equal('321 North Street')
+        expect(res.body[30]).to.have.property('phone')
+        expect(res.body[30].phone).to.equal('304-531-9836')
+        done()
+      });
+    });
+
+    it('POST returns an error when all fields are not filled in', () => {
+      chai.request(app)
+      .post('api/v1/restaurants')
+      .send({
+        name: 'Johnnys Place',
+        address: '321 North Street'
+      })
+      .end((err, res) => {
+        expect(res).to.throw
+        expect(res).to.have.status(422)
         done()
       })
-    })
+    });
   });
 
   describe('/api/v1/happyhours', () => {
