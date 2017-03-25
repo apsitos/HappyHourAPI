@@ -87,7 +87,83 @@ describe('Server', () => {
         done()
       });
     });
+  });
 
+  describe('/api/v1/restaurants/:id', () => {
+    it('GET should get a specific restaurant', (done) => {
+      chai.request(app)
+      .get('/api/v1/restaurants/1')
+      .end((err, res) => {
+        if(err) {done(err)}
+        expect(res).to.have.status(200)
+        expect(res).to.be.json
+        expect(res.body).to.be.a('array')
+        expect(res.body[0]).to.have.property('name')
+        expect(res.body[0]).to.have.property('address')
+        expect(res.body[0]).to.have.property('phone')
+        done()
+      });
+    });
+
+    it('GET returns an error if the restaurant does not exist', (done) => {
+      chai.request(app)
+      .get('/api/v1/restaurants/43')
+      .end((err, res) => {
+        expect(res).to.throw
+        done()
+      });
+    });
+
+    it.skip('PATCH should allow a restaurant to be updated', (done) => {
+      chai.request(app)
+      .patch('/api/v1/restaurants/31')
+      .send({
+        name: 'Fat Shack'
+      })
+      .end((err, res) => {
+        if(err) {done(err)}
+        expect(res).to.have.status(200)
+        expect(res).to.be.json
+        expect(res.body).to.be.a('array')
+        expect(res.body[0]).to.have.property('name')
+        expect(res.body[0].name).to.equal('Fat Shack')
+        done()
+      });
+    });
+
+    it.skip('PATCH should return an error if the restaurant does not exist', (done) => {
+      chai.request(app)
+      .patch('/api/v1/restaurants/43')
+      .send({
+        name: 'Fat Shack'
+      })
+      .end((err, res) => {
+        expect(res).to.throw
+        expect(res).to.have.status(404)
+        done()
+      });
+    });
+
+    it.skip('DELETE should remove a restaurant', (done) => {
+      chai.request(app)
+      .delete('/api/v1/restaurants/21')
+      .end((err, res) => {
+        if(err) {done(err)}
+        expect(res).to.have.status(200)
+        expect(res.body).to.have.length(29)
+        done()
+      });
+    });
+
+    it('DELETE should return an error if the restaurant does not exist', (done) => {
+      chai.request(app)
+      .delete('/api/v1/restaurants/43')
+      .end((err, res) => {
+        expect(err).to.throw
+        // expect(err).to.have.status()
+        done()
+      });
+    });
   });
 
   describe('/api/v1/happyhours', () => {
@@ -142,13 +218,90 @@ describe('Server', () => {
       })
       .end((err, res) => {
         expect(res).to.throw
-        // expect(res).to.have.status(422)
+        done()
+      });
+    });
+  });
+
+  describe('/api/v1/happyhours/:id', () => {
+    it('GET should get a specific happy hour', (done) => {
+      chai.request(app)
+      .get('/api/v1/happyhours/1')
+      .end((err, res) => {
+        if(err) {done(err)}
+        expect(res).to.have.status(200)
+        expect(res).to.be.json
+        expect(res.body).to.be.a('array')
+        expect(res.body[0]).to.have.property('id')
+        expect(res.body[0]).to.have.property('restaurant_id')
+        expect(res.body[0]).to.have.property('drinker_id')
+        expect(res.body[0]).to.have.property('hours')
+        expect(res.body[0]).to.have.property('drinks')
+        expect(res.body[0]).to.have.property('food')
         done()
       });
     });
 
-  });
+    it('GET returns an error if the happy hour does not exist', (done) => {
+      chai.request(app)
+      .get('/api/v1/happyhours/43')
+      .end((err, res) => {
+        expect(res).to.throw
+        done()
+      });
+    });
 
+    it.skip('PATCH should allow a happy hour to be updated', (done) => {
+      chai.request(app)
+      .patch('/api/v1/happyhours/31')
+      .send({
+        drinks: '$5 Fat Shake'
+      })
+      .end((err, res) => {
+        if(err) {done(err)}
+        expect(res).to.have.status(200)
+        expect(res).to.be.json
+        expect(res.body).to.be.a('array')
+        expect(res.body[0]).to.have.property('drinks')
+        expect(res.body[0].drinks).to.equal('$5 Fat Shake')
+        done()
+      });
+    });
+
+    it.skip('PATCH should return an error if the happy hour does not exist', (done) => {
+      chai.request(app)
+      .patch('/api/v1/happyhours/43')
+      .send({
+        drink: '$5 Fat Shake'
+      })
+      .end((err, res) => {
+        expect(res).to.throw
+        expect(res).to.have.status(404)
+        done()
+      });
+    });
+
+    it('DELETE should delete a specific happy hour', (done) => {
+      chai.request(app)
+      .delete('/api/v1/happyhours/21')
+      .end((err, res) => {
+        if(err) {done(err)}
+        expect(res).to.have.status(200)
+        expect(res.body).to.have.length(29)
+        done()
+      });
+    });
+
+    it('DELETE should return an error if the happy hour does not exist', (done) => {
+      chai.request(app)
+      .delete('/api/v1/happyhours/43')
+      .end((err, res) => {
+        expect(err).to.throw
+        // expect(err).to.have.status()
+        done()
+      });
+    });
+  });
 
   describe('/api/v1/drinkers', () => {
     it('GET should return a JSON object of users', (done) => {
@@ -192,119 +345,10 @@ describe('Server', () => {
         done()
       });
     });
-
   });
 
-  describe('GET /api/v1/restaurants/:id', () => {
-    it('should get a specific restaurant', (done) => {
-      chai.request(app)
-      .get('/api/v1/restaurants/1')
-      .end((err, res) => {
-        if(err) {done(err)}
-        expect(res).to.have.status(200)
-        expect(res).to.be.json
-        expect(res.body).to.be.a('array')
-        expect(res.body[0]).to.have.property('name')
-        expect(res.body[0]).to.have.property('address')
-        expect(res.body[0]).to.have.property('phone')
-        done()
-      });
-    });
-
-    it.skip('PATCH should allow a restaurant to be updated', (done) => {
-      chai.request(app)
-      .patch('/api/v1/restaurants/31')
-      .send({
-        name: 'Fat Shack'
-      })
-      .end((err, res) => {
-        if(err) {done(err)}
-        expect(res).to.have.status(200)
-        expect(res).to.be.json
-        expect(res.body).to.be.a('array')
-        expect(res.body[0]).to.have.property('name')
-        expect(res.body[0].name).to.equal('Fat Shack')
-        done()
-      });
-    });
-
-    it.skip('PATCH should return an error if the restaurant does not exist', (done) => {
-      chai.request(app)
-      .patch('/api/v1/restaurants/43')
-      .send({
-        name: 'Fat Shack'
-      })
-      .end((err, res) => {
-        expect(res).to.throw
-        expect(res).to.have.status(404)
-        done()
-      });
-    });
-
-    it('DELETE should remove a restaurant', (done) => {
-      chai.request(app)
-      .delete('/api/v1/restaurants/21')
-      .end((err, res) => {
-        if(err) {done(err)}
-        expect(res).to.have.status(200)
-        expect(res.body).to.have.length(29)
-        done()
-      })
-    })
-  });
-
-  describe('GET /api/v1/happyhours/:id', () => {
-    it('should get a specific happy hour', (done) => {
-      chai.request(app)
-      .get('/api/v1/happyhours/1')
-      .end((err, res) => {
-        if(err) {done(err)}
-        expect(res).to.have.status(200)
-        expect(res).to.be.json
-        expect(res.body).to.be.a('array')
-        expect(res.body[0]).to.have.property('id')
-        expect(res.body[0]).to.have.property('restaurant_id')
-        expect(res.body[0]).to.have.property('drinker_id')
-        expect(res.body[0]).to.have.property('hours')
-        expect(res.body[0]).to.have.property('drinks')
-        expect(res.body[0]).to.have.property('food')
-        done()
-      });
-    });
-
-    it.skip('PATCH should allow a happy hour to be updated', (done) => {
-      chai.request(app)
-      .patch('/api/v1/happyhours/31')
-      .send({
-        drinks: '$5 Fat Shake'
-      })
-      .end((err, res) => {
-        if(err) {done(err)}
-        expect(res).to.have.status(200)
-        expect(res).to.be.json
-        expect(res.body).to.be.a('array')
-        expect(res.body[0]).to.have.property('drinks')
-        expect(res.body[0].drinks).to.equal('$5 Fat Shake')
-        done()
-      });
-    });
-
-    it.skip('PATCH should return an error if the happy hour does not exist', (done) => {
-      chai.request(app)
-      .patch('/api/v1/happyhours/43')
-      .send({
-        drink: '$5 Fat Shake'
-      })
-      .end((err, res) => {
-        expect(res).to.throw
-        expect(res).to.have.status(404)
-        done()
-      });
-    });
-  });
-
-  describe('GET /api/v1/drinkers/:id', () => {
-    it('should get a specific user', (done) => {
+  describe('/api/v1/drinkers/:id', () => {
+    it('GET should get a specific user', (done) => {
       chai.request(app)
       .get('/api/v1/drinkers/1')
       .end((err, res) => {
@@ -315,6 +359,15 @@ describe('Server', () => {
         expect(res.body[0]).to.have.property('id')
         expect(res.body[0]).to.have.property('fav_hh')
         expect(res.body[0]).to.have.property('name')
+        done()
+      });
+    });
+
+    it('GET returns an error if the user does not exist', (done) => {
+      chai.request(app)
+      .get('/api/v1/drinkers/43')
+      .end((err, res) => {
+        expect(res).to.throw
         done()
       });
     });
@@ -347,6 +400,27 @@ describe('Server', () => {
         expect(err).to.have.status(404)
         done()
       });
+    });
+
+    it.skip('DELETE should delete a specific user', (done) => {
+      chai.request(app)
+      .delete('/api/v1/drinkers/21')
+      .end((err, res) => {
+        if(err) {done(err)}
+        expect(res).to.have.status(200)
+        expect(res.body).to.have.length(29)
+        done()
+      });
+    });
+  });
+
+  it('DELETE should return an error if the user does not exist', (done) => {
+    chai.request(app)
+    .delete('/api/v1/drinkers/43')
+    .end((err, res) => {
+      expect(err).to.throw
+      // expect(err).to.have.status()
+      done()
     });
   });
 });
