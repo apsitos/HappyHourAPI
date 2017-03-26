@@ -63,4 +63,4 @@ The following endpoints are available for your use!
 ###Testing
 
 There are 28 tests to be run in the current testing suite. Four of them have been skipped: the `DELETE` tests for restaurants and users due to their use of foreign keys, and the `PUT` error tests for a single happy hour and a single user due to a syntax error that pops up only on the error test.
-![Screenshot of test suite]()
+![Screenshot of test suite](https://github.com/apsitos/HappyHourAPI/blob/master/Screen%20Shot%202017-03-25%20at%209.58.53%20PM.png)
