@@ -17,17 +17,18 @@ app.get('/api/v1/restaurants', (request, response) => {
     .then(restaurants => { response.status(200).json(restaurants); })
     .catch(error => {
       console.error('Restaurants could not be loaded', error);
-      response.send(404, 'Restaurants could not be loaded');
+      response.status(404).status().send('Restaurants could not be loaded');
     })
 })
 
 app.get('/api/v1/happyhours', (request, response) => {
+
   database('happyhours').select()
     .then(happyhours => { response.status(200).json(happyhours); })
     .catch(error => {
       console.error('Happy hours could not be loaded', error);
-      response.send(404, 'Happy hours could not be loaded');
-    })
+      response.status(404).send('Happy hours could not be loaded');
+  })
 })
 
 app.get('/api/v1/drinkers', (request, response) => {
@@ -42,7 +43,7 @@ app.get('/api/v1/restaurants/:id', (request, response) => {
     .then(location => { response.status(200).json(location); })
     .catch(error => {
       console.error('Select another location', error);
-      response.send(404, 'Select another location');
+      response.status(404).send('Select another location');
     })
 })
 
@@ -52,7 +53,7 @@ app.get('/api/v1/happyhours/:id', (request, response) => {
     .then(happyhour => { response.status(200).json(happyhour); })
     .catch(error => {
       console.error('There is no happy hour', error);
-      response.send(404, 'There is no happy hour');
+      response.status(404).send('There is no happy hour');
     })
 })
 
@@ -62,12 +63,8 @@ app.get('/api/v1/drinkers/:id', (request, response) => {
     .then(person => { response.status(200).json(person); })
     .catch(error => {
       console.error('This person does not exist', error);
-      response.send(404, 'This person does not exist')
+      response.status(404).send('This person does not exist')
     })
-})
-
-app.get('/api/v1/restaurants/:id/favorites', (request, response) => {
-
 })
 
 app.post('/api/v1/restaurants', (request, response) => {
@@ -82,7 +79,7 @@ app.post('/api/v1/restaurants', (request, response) => {
         })
         .catch(error => {
           console.error('Could not add restaurant', error);
-          response.send(422, 'Please ensure the restaurant has a name, address, and phone number')
+          response.status(422).send('Please ensure the restaurant has a name, address, and phone number')
         })
     })
 })
@@ -99,7 +96,7 @@ app.post('/api/v1/happyhours', (request, response) => {
         })
         .catch(error => {
           console.error('Could not add a happyhour', error);
-          response.send(422, 'Please ensure you have filled out all fields')
+          response.status(422).send('Please ensure you have filled out all fields')
         })
     })
 })
@@ -116,28 +113,36 @@ app.post('/api/v1/drinkers', (request, response) => {
         })
         .catch(error => {
           console.error('Could not add user', error);
-          response.send(422, 'Please add a favorite')
+          response.status(422).send('Please add a favorite')
         })
     })
 })
 
-app.patch('/api/v1/restaurants', (request, response) => {
-  const { id, name, address, phone } = request.body;
-  database('restaurants').where('id', id).update({ name })
-    .then(() => {
-      database('restaurants').select()
+app.patch('/api/v1/restaurants/:id', (request, response) => {
+  const { id } = request.params;
+  const { name } = request.body;
+
+  database('restaurants').where('id', id).select().update({ name })
+    .then(()=> {
+      database('restaurants').where('id', id).select()
         .then((restaurants) => {
-          response.status(200).json(restaurants);
+          if(restaurants.length < 1) {
+            response.status(404).status().send('ID did not match exisiting restaurants')
+          }
+          else {
+            response.status(200).json(restaurants);
+          }
         })
         .catch((error) => {
           console.error('Cannot update restaurant', error);
-          response.send(422, 'Cannot update restaurant');
+          response.status(422).send('Cannot update restaurant');
         })
     })
 })
 
-app.patch('/api/v1/happyhours', (request, response) => {
-  const { id, drinks } = request.body;
+app.patch('/api/v1/happyhours/:id', (request, response) => {
+  const { id } = request.params;
+  const { drinks } = request.body;
   database('happyhours').where('id', id).update({ drinks })
     .then(() => {
       database('happyhours').select()
@@ -146,13 +151,14 @@ app.patch('/api/v1/happyhours', (request, response) => {
         })
         .catch((error) => {
           console.error('Cannot update happy hour', error);
-          response.send(422, 'Cannot update happy hour');
+          response.status(422).send('Cannot update happy hour');
         })
     })
 })
 
-app.patch('/api/v1/drinkers', (request, response) => {
-  const { id, fav_hh } = request.body;
+app.patch('/api/v1/drinkers/:id', (request, response) => {
+  const { id } = request.params;
+  const { fav_hh } = request.body;
   database('drinkers').where('id', id).update({ fav_hh })
     .then(() => {
       database('drinkers').select()
@@ -161,7 +167,7 @@ app.patch('/api/v1/drinkers', (request, response) => {
         })
         .catch((error) => {
           console.error('Cannot update user', error);
-          response.send(422, 'Cannot update user info');
+          response.status(422).send('Cannot update user info');
         })
     })
 })
@@ -180,7 +186,7 @@ app.delete('/api/v1/restaurants/:id', (request, response) => {
       })
       .catch((error) => {
         console.error('Cannot delete restaurant', error);
-        response.send(422, 'Cannot delete restaurant');
+        response.status(422).send('Cannot delete restaurant');
       })
     })
   })
@@ -198,7 +204,7 @@ app.delete('/api/v1/happyhours/:id', (request, response) => {
       })
       .catch((error) => {
         console.error('Cannot delete happy hour', error);
-        response.send(422, 'Cannot delete happy hour');
+        response.status(422).send('Cannot delete happy hour');
       })
     })
   })
@@ -214,7 +220,7 @@ app.delete('/api/v1/drinkers/:id', (request, response) => {
         })
         .catch((error) => {
           console.error('Cannot delete user', error);
-          response.send(422, 'Cannot delete user');
+          response.status(422).send('Cannot delete user');
         })
     })
 })
@@ -223,3 +229,5 @@ app.delete('/api/v1/drinkers/:id', (request, response) => {
 app.listen(app.get('port'), ()=>{
   console.log(`${app.locals.title} is running at ${app.get('port')}`)
 })
+
+module.exports = app
