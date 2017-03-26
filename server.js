@@ -52,15 +52,25 @@ app.post('/api/v1/restaurants', (request, response) => {
 });
 
 //update information about a restaurant
-app.patch('/api/v1/restaurants/:id', (request, response) => {
+app.put('/api/v1/restaurants/:id', (request, response) => {
   const { id } = request.params;
   const { name } = request.body;
 
-  database('restaurants').where('id', id).update(name)
-  .then((result) => {
-    console.log(resultg);
-  })
-
+  database('restaurants').where('id', id).update({ name: name })
+  .then(() => {
+    database('restaurants').where('id', id).select()
+      .then((restaurant) => {
+        if(restaurant.length < 1) {
+          response.status(404).send('ID did not match exisiting restaurants')
+        } else {
+          response.status(200).json(restaurant)
+        };
+      })
+      .catch((error) => {
+        console.error('Cannot update restaurant', error);
+        response.status(422).send('Cannot update restaurant');
+      });
+  });
 });
 
 //remove a restaurant
@@ -125,19 +135,26 @@ app.post('/api/v1/happyhours', (request, response) => {
 });
 
 //update information about a specific happy hour
-app.patch('/api/v1/happyhours/:id', (request, response) => {
+app.put('/api/v1/happyhours/:id', (request, response) => {
   const { id } = request.params;
   const { drinks } = request.body;
-  database('happyhours').where('id', id).update({ drinks })
+
+  const location = database('happyhours').where('id', id)
+
+  if(!location) {
+    response.status(404).send('ID did not match exisiting happy hours')
+  }
+
+  location.update({ drinks: drinks })
   .then(() => {
-    database('happyhours').select()
-    .then((happyhours) => {
-      response.status(200).json(happyhours);
-    })
-    .catch((error) => {
-      console.error('Cannot update happy hour', error);
-      response.status(422).send('Cannot update happy hour');
-    })
+    database('happyhours').where('id', id).select()
+      .then((happyhours) => {
+          response.status(200).json(happyhours)
+      })
+      .catch((error) => {
+        console.error('Cannot update happy hour', error);
+        response.status(422).send('Cannot update happy hour');
+      });
   });
 });
 
@@ -197,20 +214,25 @@ app.post('/api/v1/drinkers', (request, response) => {
 });
 
 //update information about a specific user
-app.patch('/api/v1/drinkers/:id', (request, response) => {
+app.put('/api/v1/drinkers/:id', (request, response) => {
   const { id } = request.params;
-  const { fav_hh } = request.body;
-  database('drinkers').where('id', id).update({ fav_hh })
-    .then(() => {
-      database('drinkers').select()
-        .then((drinkers) => {
-          response.status(200).json(drinkers);
-        })
-        .catch((error) => {
-          console.error('Cannot update user', error);
-          response.status(422).send('Cannot update user info');
-        })
-    });
+  const { name } = request.body;
+
+  database('drinkers').where('id', id).update({ name: name})
+  .then((result) => {
+    database('drinkers').where('id', id).select()
+      .then((drinker) => {
+        if(drinker.length < 1) {
+          response.status(404).send('ID does not match current user')
+        } else {
+          response.status(200).json(drinker)
+        };
+      })
+      .catch((error) => {
+        console.error('Cannot update user', error);
+        response.status(422).send('Cannot update user')
+      });
+  });
 });
 
 //remove a speicific user
@@ -235,26 +257,3 @@ app.listen(app.get('port'), ()=>{
 })
 
 module.exports = app
-
-
-app.patch('/api/v1/restaurants/:id', (request, response) => {
-  const { id } = request.params;
-  const { name } = request.body;
-
-  database('restaurants').where('id', id).select().update({ name })
-  .then(()=> {
-    database('restaurants').where('id', id).select()
-    .then((restaurants) => {
-      if(restaurants.length < 1) {
-        response.status(404).status().send('ID did not match exisiting restaurants')
-      }
-      else {
-        response.status(200).json(restaurants);
-      }
-    })
-    .catch((error) => {
-      console.error('Cannot update restaurant', error);
-      response.status(422).send('Cannot update restaurant');
-    });
-  });
-});
