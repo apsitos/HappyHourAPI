@@ -412,15 +412,15 @@ describe('Server', () => {
         done()
       });
     });
-  });
 
-  it('DELETE should return an error if the user does not exist', (done) => {
-    chai.request(app)
-    .delete('/api/v1/drinkers/43')
-    .end((err, res) => {
-      expect(err).to.throw
-      // expect(err).to.have.status()
-      done()
+    it('DELETE should return an error if the user does not exist', (done) => {
+      chai.request(app)
+      .delete('/api/v1/drinkers/43')
+      .end((err, res) => {
+        expect(err).to.throw
+        // expect(err).to.have.status()
+        done()
+      });
     });
   });
 });
