@@ -146,7 +146,7 @@ describe('Server', () => {
 
     it.skip('DELETE should remove a restaurant', (done) => {
       chai.request(app)
-      .delete('/api/v1/restaurants/21')
+      .delete('/api/v1/restaurants/1')
       .end((err, res) => {
         if(err) {done(err)}
         expect(res).to.have.status(200)
@@ -268,7 +268,7 @@ describe('Server', () => {
       });
     });
 
-    it('PUT should return an error if the happy hour does not exist', (done) => {
+    it.skip('PUT should return an error if the happy hour does not exist', (done) => {
       chai.request(app)
       .put('/api/v1/happyhours/43')
       .send({

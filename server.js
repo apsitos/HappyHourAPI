@@ -76,6 +76,7 @@ app.put('/api/v1/restaurants/:id', (request, response) => {
 //remove a restaurant
 app.delete('/api/v1/restaurants/:id', (request, response) => {
   const { id } = request.params;
+
   database('drinkers').where('fav_hh', id).update({fav_hh: null})
   .then(() => {
     database('happyhours').where('restaurant_id', id).del()
@@ -161,6 +162,8 @@ app.put('/api/v1/happyhours/:id', (request, response) => {
 //remove a specific happy hour
 app.delete('/api/v1/happyhours/:id', (request, response) => {
   const { id } = request.params;
+
+
   database('happyhours').where('drinker_id', id).update({drinker_id: null})
   .then(() => {
     database('happyhours').where('id', id).del()
