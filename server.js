@@ -140,13 +140,7 @@ app.put('/api/v1/happyhours/:id', (request, response) => {
   const { id } = request.params;
   const { drinks } = request.body;
 
-  const location = database('happyhours').where('id', id)
-
-  if(!location) {
-    response.status(404).send('ID did not match exisiting happy hours')
-  }
-
-  location.update({ drinks: drinks })
+  database('happyhours').where('id', id).update({ drinks: drinks })
   .then(() => {
     database('happyhours').where('id', id).select()
       .then((happyhours) => {
@@ -162,7 +156,6 @@ app.put('/api/v1/happyhours/:id', (request, response) => {
 //remove a specific happy hour
 app.delete('/api/v1/happyhours/:id', (request, response) => {
   const { id } = request.params;
-
 
   database('happyhours').where('drinker_id', id).update({drinker_id: null})
   .then(() => {
