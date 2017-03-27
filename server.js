@@ -26,10 +26,12 @@ app.get('/api/v1/restaurants', (request, response) => {
 app.get('/api/v1/restaurants/:id', (request, response) => {
   const { id } = request.params;
   database('restaurants').where('id', id).select()
-  .then(location => { response.status(200).json(location); })
-  .catch(error => {
-    console.error('Select another location', error);
-    response.status(404).send('Select another location');
+  .then(location => {
+    if(location.length > 0) {
+      response.status(200).json(location);
+    } else {
+      response.status(404).send('That location has not yet been added');
+    }
   });
 });
 
@@ -109,11 +111,12 @@ app.get('/api/v1/happyhours', (request, response) => {
 //retrieve a specific happy hour
 app.get('/api/v1/happyhours/:id', (request, response) => {
   const { id } = request.params;
+
   database('happyhours').where('id', id).select()
   .then(happyhour => { response.status(200).json(happyhour); })
   .catch(error => {
     console.error('There is no happy hour', error);
-    response.status(404).send('There is no happy hour');
+    response.status(404).send('There is no happy hour matching that ID');
   });
 });
 
