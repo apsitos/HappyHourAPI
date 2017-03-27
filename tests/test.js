@@ -114,9 +114,9 @@ describe('Server', () => {
       });
     });
 
-    it.skip('PATCH should allow a restaurant to be updated', (done) => {
+    it('PUT should allow a restaurant to be updated', (done) => {
       chai.request(app)
-      .patch('/api/v1/restaurants/31')
+      .put('/api/v1/restaurants/30')
       .send({
         name: 'Fat Shack'
       })
@@ -131,9 +131,9 @@ describe('Server', () => {
       });
     });
 
-    it.skip('PATCH should return an error if the restaurant does not exist', (done) => {
+    it('PUT should return an error if the restaurant does not exist', (done) => {
       chai.request(app)
-      .patch('/api/v1/restaurants/43')
+      .put('/api/v1/restaurants/43')
       .send({
         name: 'Fat Shack'
       })
@@ -146,7 +146,7 @@ describe('Server', () => {
 
     it.skip('DELETE should remove a restaurant', (done) => {
       chai.request(app)
-      .delete('/api/v1/restaurants/21')
+      .delete('/api/v1/restaurants/1')
       .end((err, res) => {
         if(err) {done(err)}
         expect(res).to.have.status(200)
@@ -251,9 +251,9 @@ describe('Server', () => {
       });
     });
 
-    it.skip('PATCH should allow a happy hour to be updated', (done) => {
+    it('PUT should allow a happy hour to be updated', (done) => {
       chai.request(app)
-      .patch('/api/v1/happyhours/31')
+      .put('/api/v1/happyhours/30')
       .send({
         drinks: '$5 Fat Shake'
       })
@@ -268,9 +268,9 @@ describe('Server', () => {
       });
     });
 
-    it.skip('PATCH should return an error if the happy hour does not exist', (done) => {
+    it.skip('PUT should return an error if the happy hour does not exist', (done) => {
       chai.request(app)
-      .patch('/api/v1/happyhours/43')
+      .put('/api/v1/happyhours/43')
       .send({
         drink: '$5 Fat Shake'
       })
@@ -372,9 +372,9 @@ describe('Server', () => {
       });
     });
 
-    it.skip('PATCH should allow a userto be updated', (done) => {
+    it('PUT should allow a user to be updated', (done) => {
       chai.request(app)
-      .patch('/api/v1/drinkers/31')
+      .put('/api/v1/drinkers/29')
       .send({
         name: 'Sandy Bruse'
       })
@@ -384,14 +384,14 @@ describe('Server', () => {
         expect(res).to.be.json
         expect(res.body).to.be.a('array')
         expect(res.body[0]).to.have.property('name')
-        expect(res.body[0].drinks).to.equal('Sandy Bruse')
+        expect(res.body[0].name).to.equal('Sandy Bruse')
         done()
       });
     });
 
-    it.skip('PATCH should return an error if the user does not exist', (done) => {
+    it.skip('PUT should return an error if the user does not exist', (done) => {
       chai.request(app)
-      .patch('/api/v1/happyhours/43')
+      .put('/api/v1/happyhours/43')
       .send({
         name: 'Sandy Bruse'
       })
@@ -412,15 +412,15 @@ describe('Server', () => {
         done()
       });
     });
-  });
 
-  it('DELETE should return an error if the user does not exist', (done) => {
-    chai.request(app)
-    .delete('/api/v1/drinkers/43')
-    .end((err, res) => {
-      expect(err).to.throw
-      // expect(err).to.have.status()
-      done()
+    it('DELETE should return an error if the user does not exist', (done) => {
+      chai.request(app)
+      .delete('/api/v1/drinkers/43')
+      .end((err, res) => {
+        expect(err).to.throw
+        // expect(err).to.have.status()
+        done()
+      });
     });
   });
 });
