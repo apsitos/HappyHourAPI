@@ -18,8 +18,8 @@
   },
   "homepage": "https://github.com/apsitos/HappyHourAPI#readme",
   "dependencies": {
-    "body-parser": "^1.17.1",
-    "expres": "0.0.5",
+    "body-parser": "*",
+    "express": "*",
     "knex": "^0.12.8",
     "pg": "^6.1.5"
   },
