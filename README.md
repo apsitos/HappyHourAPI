@@ -11,6 +11,8 @@ The following endpoints are available for your use!
 
 #### Restaurants
 
+Checkout the full array [here](https://hhapi-ap.herokuapp.com/api/v1/restaurants)
+
 `GET`/api/v1/restaurants
 * returns a complete array of restaurants, including its name, address, and phone number
 
@@ -28,6 +30,8 @@ The following endpoints are available for your use!
 
 #### Happy Hours
 
+Checkout the full array [here](https://hhapi-ap.herokuapp.com/api/v1/happyhours)
+
 `GET`/api/v1/happyhours
 * returns a complete array of happy hours, including the hours and its food and drink specials, with a unique identifier to associate it with its restaurant
 
@@ -44,6 +48,8 @@ The following endpoints are available for your use!
 * removes a single happy hour
 
 #### Users
+
+Checkout the full array [here](https://hhapi-ap.herokuapp.com/api/v1/drinkers)
 
 `GET`/api/v1/drinkers
 * returns a complete array of all current users, including their name and favorite happy hour

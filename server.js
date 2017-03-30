@@ -14,12 +14,18 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 //retrieve all restaurants
 app.get('/api/v1/restaurants', (request, response) => {
-  database('restaurants').select()
-    .then(restaurants => { response.status(200).json(restaurants); })
-    .catch(error => {
-      console.error('Restaurants could not be loaded', error);
-      response.status(404).status().send('Restaurants could not be loaded');
-    });
+  const location = request.query.location
+  console.log(location);
+
+  if(!location) {
+    database('restaurants').select()
+    .then(restaurants => response.status(200).json(restaurants))
+    .catch(err => response.status(404).send('Restaurants could not be loaded'))
+  } else {
+    database('restaurants').where('id', location).select()
+    .then(restaurant => response.status(200).json(restaurant))
+    .catch(err => response.status(404).send('That id is not in our records'))
+  }
 });
 
 //retrieve a specific restaurant
@@ -99,13 +105,17 @@ app.delete('/api/v1/restaurants/:id', (request, response) => {
 
 //retrieve all happy hours
 app.get('/api/v1/happyhours', (request, response) => {
+  const time = request.query.time
 
-  database('happyhours').select()
+  if(!time){
+    database('happyhours').select()
     .then(happyhours => { response.status(200).json(happyhours); })
-    .catch(error => {
-      console.error('Happy hours could not be loaded', error);
-      response.status(404).send('Happy hours could not be loaded');
-  });
+    .catch(error => { response.status(404).send('Happy hours could not be loaded');
+  } else {
+    database('happyhours').where('id', time).select()
+    .then(happyhours => { response.status(200).json(happyhours); })
+    .catch(err = response.status(404).send('There is no happy hour with that id'))
+  }
 });
 
 //retrieve a specific happy hour
@@ -178,9 +188,17 @@ app.delete('/api/v1/happyhours/:id', (request, response) => {
 
 //retreieve all users
 app.get('/api/v1/drinkers', (request, response) => {
-  database('drinkers').select()
+  const user = request.query.user
+
+  if(!user){
+    database('drinkers').select()
     .then(drinkers => { response.status(200).json(drinkers); })
-    .catch(error => { console.error('Participants cannot be loaded', error) ;})
+    .catch(error => { response.status(404).send('Participants cannot be loaded') })
+  } else{
+    database('drinkers').where('id', user).select()
+    .then(user => { response.status(200).json(user) })
+    .catch(error => { response.status(404).send('There is no user with that id') })
+  }
 });
 
 //retrieve a specific user
