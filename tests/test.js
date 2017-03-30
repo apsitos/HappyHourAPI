@@ -49,6 +49,28 @@ describe('Server', () => {
       });
     });
 
+    it('GET should return a single restaurant when queried', (done) => {
+      chai.request(app)
+      .get('/api/v1/restaurants?id=2')
+      .end((err, res) => {
+        if(err) {done(err)}
+        expect(res).to.have.status(200)
+        expect(res).to.be.json
+        expect(res).to.be.a('object')
+        done()
+      });
+    });
+
+    it('GET should return an error if the query returns nothing', (done) => {
+      chai.request(app)
+      .get('/api/v1/restaurants?id=42')
+      .end((err, res) => {
+        expect(res).to.throw
+        // expect(res).to.have.status(404)
+        done()
+      })
+    })
+
     it('POST should add a new restaurant', (done) => {
       chai.request(app)
       .post('/api/v1/restaurants')
@@ -167,7 +189,7 @@ describe('Server', () => {
   });
 
   describe('/api/v1/happyhours', () => {
-    it('should return a JSON object of happyhours', (done) => {
+    it('GET should return a JSON object of happyhours', (done) => {
       chai.request(app)
       .get('/api/v1/happyhours')
       .end((err, res) => {
@@ -179,6 +201,28 @@ describe('Server', () => {
         done()
       });
     });
+
+    it('GET should return a single happy hour when queried', (done) => {
+      chai.request(app)
+      .get('/api/v1/happyhours?id=2')
+      .end((err, res) => {
+        if(err) {done(err)}
+        expect(res).to.have.status(200)
+        expect(res).to.be.json
+        expect(res).to.be.a('object')
+        done()
+      });
+    });
+
+    it('GET should return an error if the query returns nothing', (done) => {
+      chai.request(app)
+      .get('/api/v1/happyhours?id=42')
+      .end((err, res) => {
+        expect(res).to.throw
+        // expect(res).to.have.status(404)
+        done()
+      })
+    })
 
     it('POST should add a new happy hour', (done) => {
       chai.request(app)
@@ -316,6 +360,28 @@ describe('Server', () => {
         done()
       });
     });
+
+    it('GET should return a single user when queried', (done) => {
+      chai.request(app)
+      .get('/api/v1/drinkers?id=2')
+      .end((err, res) => {
+        if(err) {done(err)}
+        expect(res).to.have.status(200)
+        expect(res).to.be.json
+        expect(res).to.be.a('object')
+        done()
+      });
+    });
+
+    it('GET should return an error if the query returns nothing', (done) => {
+      chai.request(app)
+      .get('/api/v1/drinkers?id=42')
+      .end((err, res) => {
+        expect(res).to.throw
+        // expect(res).to.have.status(404)
+        done()
+      })
+    })
 
     it('POST should add a new user', (done) => {
       chai.request(app)

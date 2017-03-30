@@ -15,7 +15,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 //retrieve all restaurants
 app.get('/api/v1/restaurants', (request, response) => {
   const location = request.query.location
-  console.log(location);
 
   if(!location) {
     database('restaurants').select()
@@ -111,10 +110,11 @@ app.get('/api/v1/happyhours', (request, response) => {
     database('happyhours').select()
     .then(happyhours => { response.status(200).json(happyhours); })
     .catch(error => { response.status(404).send('Happy hours could not be loaded');
+    })
   } else {
-    database('happyhours').where('id', time).select()
-    .then(happyhours => { response.status(200).json(happyhours); })
-    .catch(err = response.status(404).send('There is no happy hour with that id'))
+  database('happyhours').where('id', time).select()
+  .then(happyhours => { response.status(200).json(happyhours); })
+  .catch(err = response.status(404).send('There is no happy hour with that id'))
   }
 });
 
