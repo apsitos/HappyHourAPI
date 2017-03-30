@@ -19,6 +19,9 @@ Checkout the full array [here](https://hhapi-ap.herokuapp.com/api/v1/restaurants
 `GET`/api/v1/restaurants/:id
 * returns a single restaurant and its name, address, and phone number
 
+`GET`/api/v1/restaurants?id=
+* will return a single restaurant when a number is entered after the =
+
 `POST`/api/v1/restaurants
 * allows a new restaurant to be added to the database; must include name, address, and phone number
 
@@ -34,6 +37,9 @@ Checkout the full array [here](https://hhapi-ap.herokuapp.com/api/v1/happyhours)
 
 `GET`/api/v1/happyhours
 * returns a complete array of happy hours, including the hours and its food and drink specials, with a unique identifier to associate it with its restaurant
+
+`GET`/api/v1/happyhours?id=
+* will return a single happy hour when a number is entered after the =
 
 `GET`/api/v1/happyhours/:id
 * returns a single happy hour and its information
@@ -53,6 +59,9 @@ Checkout the full array [here](https://hhapi-ap.herokuapp.com/api/v1/drinkers)
 
 `GET`/api/v1/drinkers
 * returns a complete array of all current users, including their name and favorite happy hour
+
+`GET`/api/v1/drinkers?id=
+* will return a single user when a number is entered after the =
 
 `GET`/api/v1/drinkers/:id
 * returns a single user and their information
