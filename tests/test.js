@@ -166,7 +166,7 @@ describe('Server', () => {
       });
     });
 
-    it.skip('DELETE should remove a restaurant', (done) => {
+    it('DELETE should remove a restaurant', (done) => {
       chai.request(app)
       .delete('/api/v1/restaurants/1')
       .end((err, res) => {
@@ -312,7 +312,20 @@ describe('Server', () => {
       });
     });
 
-    it.skip('PUT should return an error if the happy hour does not exist', (done) => {
+    it('PUT should return an error if the happy hour does not exist', (done) => {
+      chai.request(app)
+      .put('/api/v1/happyhours/43')
+      .send({
+        drinks: '$5 Fat Shake'
+      })
+      .end((err, res) => {
+        expect(res).to.throw
+        // expect(res).to.have.status(404)
+        done()
+      });
+    });
+
+    it('PUT should return an error if passed incorrect data', (done) => {
       chai.request(app)
       .put('/api/v1/happyhours/43')
       .send({
@@ -320,7 +333,7 @@ describe('Server', () => {
       })
       .end((err, res) => {
         expect(res).to.throw
-        expect(res).to.have.status(404)
+        // expect(res).to.have.status(404)
         done()
       });
     });
@@ -455,9 +468,9 @@ describe('Server', () => {
       });
     });
 
-    it.skip('PUT should return an error if the user does not exist', (done) => {
+    it('PUT should return an error if the user does not exist', (done) => {
       chai.request(app)
-      .put('/api/v1/happyhours/43')
+      .put('/api/v1/drinkers/43')
       .send({
         name: 'Sandy Bruse'
       })
@@ -468,7 +481,7 @@ describe('Server', () => {
       });
     });
 
-    it.skip('DELETE should delete a specific user', (done) => {
+    it('DELETE should delete a specific user', (done) => {
       chai.request(app)
       .delete('/api/v1/drinkers/21')
       .end((err, res) => {

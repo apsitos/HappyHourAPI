@@ -87,13 +87,14 @@ app.delete('/api/v1/restaurants/:id', (request, response) => {
   database('drinkers').where('fav_hh', id).update({fav_hh: null})
   .then(() => {
     database('happyhours').where('restaurant_id', id).del()
-  }).then(() => {
-    database('restaurants').where('id', id).del()
     .then(() => {
-      database('restaurants').select()
-      .then((restaurants) => {
-        response.status(200).json(restaurants);
-      })
+      database('restaurants').where('id', id).del()
+      .then(() => {
+        database('restaurants').select()
+        .then((restaurants) => {
+          response.status(200).json(restaurants);
+        })
+  })
       .catch((error) => {
         console.error('Cannot delete restaurant', error);
         response.status(422).send('Cannot delete restaurant');
@@ -152,6 +153,7 @@ app.post('/api/v1/happyhours', (request, response) => {
 app.put('/api/v1/happyhours/:id', (request, response) => {
   const { id } = request.params;
   const { drinks } = request.body;
+  if(!drinks){ return response.status(422).send('did not pass valid data') }
 
   database('happyhours').where('id', id).update({ drinks: drinks })
   .then(() => {
@@ -255,12 +257,15 @@ app.put('/api/v1/drinkers/:id', (request, response) => {
 //remove a speicific user
 app.delete('/api/v1/drinkers/:id', (request, response) => {
   const { id } = request.params;
-  database('drinkers').where('id', id).del()
+  database('happyhours').where('drinker_id', id).select().update({drinker_id: null})
+  .then(() => {
+    database('drinkers').where('id', id).del()
     .then(() => {
       database('drinkers').select()
-        .then((drinkers) => {
-          response.status(200).json(drinkers);
-        })
+      .then((drinkers) => {
+        response.status(200).json(drinkers);
+      })
+  })
         .catch((error) => {
           console.error('Cannot delete user', error);
           response.status(422).send('Cannot delete user');
